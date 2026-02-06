@@ -1,0 +1,8 @@
+
+{
+  "name": "Aquaflow AI - Intelligent Water Leak Support System",
+  "description": "A comprehensive water management platform featuring AI-driven underground leak detection, real-time monitoring of flow and pressure data, and a robust authentication system for municipal authorities and maintenance teams.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
