@@ -188,7 +188,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
       
       {/* Footer Branding */}
       <p className="absolute bottom-8 text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
-        Aquaflow AI &copy; 2024 &bull; security
+        Aquaflow AI &copy; 2024 &bull; its new infra
       </p>
     </div>
   );
