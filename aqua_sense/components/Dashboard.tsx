@@ -61,7 +61,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
         <div className="space-y-1">
           <div className="flex items-center space-x-2">
             <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">System Online &bull; Node Cluster A-12</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">System  &bull; Node Cluster A-12</span>
           </div>
           <h1 className="text-4xl font-black text-slate-900 tracking-tight">
             {isAuthority && 'Operational Oversight'}
@@ -128,7 +128,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
             <div className="flex items-center justify-between mb-10">
               <div>
                 <h3 className="text-xl font-black text-slate-900 tracking-tight">Technical Telemetry</h3>
-                <p className="text-sm font-medium text-slate-400">Flow/Pressure synchronization over last 24 nodes</p>
+                <p className="text-sm font-medium text-slate-400">Flow/Pressure over last 24 nodes</p>
               </div>
               <div className="flex space-x-2 bg-slate-50 p-1 rounded-xl border border-slate-100">
                 <button className="px-5 py-2 bg-white text-[10px] font-black uppercase text-blue-600 rounded-lg shadow-sm border border-slate-100">Live</button>
