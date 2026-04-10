@@ -61,8 +61,8 @@ pipeline {
 
         stage('Verify Deployment') {
             steps {
-                bat 'kubectl get pods'
-                bat 'kubectl get services'
+                bat 'set KUBECONFIG=C:\\Users\\Sahana Arumugam\\.kube\\config && kubectl get pods'
+                bat 'set KUBECONFIG=C:\\Users\\Sahana Arumugam\\.kube\\config && kubectl get services'
             }
         }
     }
