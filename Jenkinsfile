@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/MEGHA959586/Aqua_Ai.git'
+                git branch: 'meghana', url: 'https://github.com/MEGHA959586/Aqua_Ai.git'
             }
         }
 
