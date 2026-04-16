@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Define your Docker Hub username and image name
         DOCKER_HUB_USERNAME = 'MEGHA959586'
         DOCKER_IMAGE_NAME = 'my_docker_image_meghana'
         DOCKER_IMAGE_TAG = 'latest'
@@ -17,16 +16,16 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat "docker build -t ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ." 
+                bat "docker build -t ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
             }
         }
 
         stage('Login to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-cred', 
-                                                  usernameVariable: 'MEGHA959586', 
-                                                  passwordVariable: 'Me@20092006')]) {
-                    bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin" 
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-cred',
+                                                  usernameVariable: 'DOCKER_USER',
+                                                  passwordVariable: 'DOCKER_PASS')]) {
+                    bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin"
                 }
             }
         }
@@ -37,9 +36,10 @@ pipeline {
             }
         }
     }
+
     post {
         success {
             bat "docker rmi ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
         }
     }
-} 
+}
