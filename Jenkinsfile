@@ -2,44 +2,59 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_USERNAME = 'MEGHA959586'
-        DOCKER_IMAGE_NAME = 'my_docker_image_meghana'
-        DOCKER_IMAGE_TAG = 'latest'
+        DOCKER_USERNAME = 'MEGHA959586'
+        IMAGE_NAME = 'online-book-store'
+        IMAGE_TAG = 'latest'
     }
 
     stages {
-        stage('Clone Repository') {
+
+        stage('1. Clone Repository') {
             steps {
-                git branch: 'meghana', url: 'https://github.com/MEGHA959586/Aqua_Ai.git'
+                // When using "Pipeline script from SCM", this automatically fetches the repo
+                checkout scm
             }
         }
 
-        stage('Build Docker Image') {
+        stage('2. Install Dependencies') {
             steps {
-                docker.build("${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+                bat 'npm install'
             }
         }
 
-        stage('Login to Docker Hub') {
+        stage('3. Build Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'Dock_cred_hub',
-                                                  usernameVariable: 'DOCKER_USER',
-                                                  passwordVariable: 'DOCKER_PASS')]) {
-                    bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin"
+                script {
+                    dockerImage = docker.build("${DOCKER_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}")
                 }
             }
         }
 
-        stage('Push Image to Docker Hub') {
+        stage('4. Login & Push to DockerHub') {
             steps {
-                bat "docker push ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+                script {
+                    docker.withRegistry('', 'Dock_cred_hub') {
+                        dockerImage.push("${IMAGE_TAG}")
+                        dockerImage.push("latest")
+                        echo 'Image pushed to DockerHub successfully'
+                    }
+                }
             }
         }
-    }
 
-    post {
-        success {
-            bat "docker rmi ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+        stage('5. Deploy to Kubernetes') {
+            steps {
+                withKubeConfig([credentialsId: 'kubectl-config-secret']) {
+                    bat 'kubectl apply -f deployment.yaml'
+                    bat 'kubectl rollout status deployment/online-book-store'
+                }
+            }
+        }
+
+        stage('6. Build Successful') {
+            steps {
+                echo 'CI/CD Pipeline completed successfully!'
+            }
         }
     }
 }
