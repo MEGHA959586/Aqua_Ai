@@ -11,7 +11,6 @@ pipeline {
 
         stage('1. Clone Repository') {
             steps {
-                // When using "Pipeline script from SCM", this automatically fetches the repo
                 checkout scm
             }
         }
@@ -44,7 +43,7 @@ pipeline {
 
         stage('5. Deploy to Kubernetes') {
             steps {
-                withKubeConfig([credentialsId: 'kubectl-config-secret']) {
+                withKubeConfig([credentialsId: 'kubeconfig-secret']) {   // ✅ Corrected ID
                     bat 'kubectl apply -f deployment.yaml'
                     bat 'kubectl rollout status deployment/online-book-store'
                 }
